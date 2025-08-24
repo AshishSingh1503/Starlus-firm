@@ -1,0 +1,55 @@
+app:
+device_id: "pen-001"
+site: "school-A"
+log_level: "INFO" # DEBUG, INFO, WARNING, ERROR
+sample_rate_hz: 1600 # audio sample rate for VAD (webrtcvad supported: 8000/16000/32000/48000)
+frame_ms: 30 # 10/20/30 ms frames
+vad_aggressiveness: 2 # 0-3 (3 is most aggressive)
+pressure_poll_hz: 200 # sampling loop frequency
+pressure_threshold: 50 # ADC threshold for pen-down
+debounce_ms: 6 # debounce for pen-down/up transitions
+idle_sleep_s: 0.005 # main loop sleep
+local_audio_dir: "/var/lib/pen/audio"
+local_db_path: "/var/lib/pen/queue.db"
+
+
+sensor:
+adc: "ads1115" # or "mcp3008"
+ads1115:
+i2c_bus: 1
+address: 0x48
+channel: 0
+gain: 1
+mcp3008:
+spi_bus: 0
+spi_device: 0
+channel: 0
+battery:
+type: "max17043" # or "none"
+i2c_bus: 1
+
+
+uplink:
+mode: "mqtt" # or "https"
+mqtt:
+broker: "mqtts://example-broker"
+port: 8883
+topic: "sld/pen"
+client_id: "${app.device_id}"
+ca_cert: "/etc/pen/ca.pem"
+certfile: "/etc/pen/client.crt"
+keyfile: "/etc/pen/client.key"
+https:
+endpoint: "https://api.example.com/ingest"
+api_key: "REPLACE_ME"
+
+
+ota:
+enabled: true
+check_interval_h: 12
+feed: "https://updates.example.com/pen/manifest.json"
+
+
+power:
+low_batt_percent: 15
+critical_batt_percent: 5

@@ -1,0 +1,22 @@
+[Unit]
+Description=SLD Smart Pen Firmware
+After=network-online.target sound.target
+Wants=network-online.target
+
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+Environment="PYTHONUNBUFFERED=1"
+ExecStart=/opt/pen-venv/bin/python -u /home/pi/pen-firmware/app/main.py --config /home/pi/pen-firmware/app/config.yaml
+Restart=on-failure
+RestartSec=3
+
+
+# Increase real-time scheduling priority if needed
+# Nice=-5
+
+
+[Install]
+WantedBy=multi-user.target

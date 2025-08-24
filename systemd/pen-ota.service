@@ -1,0 +1,10 @@
+[Unit]
+Description=SLD Pen OTA Updater
+After=network-online.target
+
+
+[Service]
+Type=oneshot
+User=pi
+Group=pi
+ExecStart=/opt/pen-venv/bin/python -u /home/pi/pen-firmware/app/ota/updater.py --config /home/pi/pen-firmware/app/config.yaml
